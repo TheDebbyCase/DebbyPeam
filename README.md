@@ -19,7 +19,7 @@ or the GitHub page [here](https://github.com/TheDebbyCase/DebbyPeam)!
 	Original design by [oniimely](https://www.twitch.tv/oniimely),  
 	Looks weirdly filling for a cat, if a little spicy  
 	
-	![Preview](https://github.com/TheDebbyCase/DebbyPeam/blob/master/Images/HellgatoPreview.png)
+	![Preview](https://raw.githubusercontent.com/TheDebbyCase/DebbyPeam/refs/heads/master/Images/HellgatoPreview.png)
 	
 	</details>
 	
@@ -29,7 +29,7 @@ or the GitHub page [here](https://github.com/TheDebbyCase/DebbyPeam)!
 	
 	It's a tail, I promise. And yes, you can grab them.
 	
-	![Preview](https://github.com/TheDebbyCase/DebbyPeam/blob/master/Images/TrouserRopePreview.png)
+	![Preview](https://raw.githubusercontent.com/TheDebbyCase/DebbyPeam/refs/heads/master/Images/TrouserRopePreview.png)
 	
 	</details>
 	

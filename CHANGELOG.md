@@ -1,3 +1,6 @@
+## 0.0.4
+- Actually fixed preview images in the README
+
 ## 0.0.3
 - Attempted to fix preview images not displaying
 
