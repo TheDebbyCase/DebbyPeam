@@ -1,6 +1,6 @@
 # Debby Peam
 
-Repository for my very first mod for PEAK, Debby Peam!
+Repository for my very first mod for PEAK, Debby Peam! Just a collection of things I think are cool and what's suggested to me!
 
 You can use the [Issues](https://github.com/TheDebbyCase/DebbyPeam/issues) tab to submit any problems with the mod, or any suggestions you may have.
 Suggestions can also be made directly to me if you can find me on Discord, or on [Bluesky](https://bsky.app/profile/thedebbycase.bsky.social)!
@@ -34,12 +34,6 @@ or the GitHub page [here](https://github.com/TheDebbyCase/DebbyPeam)!
 	</details>
 	
 I hope to add more soon! Make suggestions on BlueSky!
-
-## WILDCARD
-
-Unfortunately the group is disbanding, but certain members will more than likely continue making content around R.E.P.O, and all will, of course, keep making content!
-
-Subscribe to [WILDCARD](https://www.youtube.com/@WILDCARDorg) members by looking at the channel's recommended channels!
 
 ## Extra Credits
 
