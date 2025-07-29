@@ -13,12 +13,28 @@ namespace DebbyPeam.Misc
         public Character playerOwner;
         public RopeAnchorWithRope ropeAnchorWithRope;
         public Rope rope;
+        private Lazy<Rope> ropeLazy;
+        public Rope Rope => ropeLazy!.Value;
         public float weightAdded = 0f;
         public float playerDragForce = 100f;
         public bool prepared = false;
         public void Start()
         {
             GlobalEvents.OnCharacterOwnerDisconnected = (Action<Character>)Delegate.Combine(GlobalEvents.OnCharacterOwnerDisconnected, new Action<Character>(RopeOwnerDisconnect));
+            ropeLazy = new Lazy<Rope>(() =>
+            {
+                if (ropeAnchorWithRope == null)
+                {
+                    ropeAnchorWithRope = GetComponent<RopeAnchorWithRope>();
+                }
+
+                if (ropeAnchorWithRope != null)
+                {
+                    return ropeAnchorWithRope.ropeInstance.GetComponent<Rope>();
+                }
+
+                throw new NotImplementedException();
+            });
         }
         public void RopeOwnerDisconnect(Character character)
         {
@@ -71,7 +87,7 @@ namespace DebbyPeam.Misc
         }
         public IEnumerator WaitForRopeSegments()
         {
-            rope = null;
+            //rope = null;
             while (rope == null)
             {
                 rope = ropeAnchorWithRope.ropeInstance.GetComponent<Rope>();
@@ -84,16 +100,30 @@ namespace DebbyPeam.Misc
             joint.connectedBody.constraints = RigidbodyConstraints.FreezePosition;
             joint.connectedBody.angularDamping = 0.1f;
             joint.connectedBody.linearDamping = 0.1f;
-            Material[] materials = new Material[] { trouserRopeDictionary[playerOwner].rope.ropeBoneVisualizer.meshRenderer.sharedMaterial, trouserRopeDictionary[playerOwner].ropeAnchorWithRope.anchor.normalPart.transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial };
+            var trouserRope = trouserRopeDictionary[playerOwner];
+            var trouserRopeRope = trouserRope.rope;
+            while (trouserRopeRope == null)
+            {
+                yield return null;
+                trouserRopeRope = trouserRope.rope;
+            }
+
+            Material[] materials = new Material[]
+            {
+                trouserRopeRope.ropeBoneVisualizer.meshRenderer.sharedMaterial,
+                trouserRope.ropeAnchorWithRope.anchor.normalPart.transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial
+            };
+            var charCustomization = playerOwner.refs.customization;
             for (int i = 0; i < materials.Length; i++)
             {
-                materials[i].SetTexture("_BaseTexture", null);
-                materials[i].SetColor("_Tint", playerOwner.refs.customization.PlayerColor / 2f);
-                materials[i].SetFloat("_HueStr1", 0.2f);
-                materials[i].SetColor("_BaseColor", playerOwner.refs.customization.PlayerColor);
-                materials[i].SetColor("_Color1", playerOwner.refs.customization.PlayerColor);
-                materials[i].SetColor("_Color21", playerOwner.refs.customization.PlayerColor);
-                materials[i].SetColor("_Color3", playerOwner.refs.customization.PlayerColor);
+                var material = materials[i];
+                material.SetTexture("_BaseTexture", null);
+                material.SetColor("_Tint", charCustomization.PlayerColor / 2f);
+                material.SetFloat("_HueStr1", 0.2f);
+                material.SetColor("_BaseColor", charCustomization.PlayerColor);
+                material.SetColor("_Color1", charCustomization.PlayerColor);
+                material.SetColor("_Color21", charCustomization.PlayerColor);
+                material.SetColor("_Color3", charCustomization.PlayerColor);
             }
             prepared = true;
         }
@@ -102,9 +132,10 @@ namespace DebbyPeam.Misc
             if (prepared)
             {
                 float newWeightAdded = 0f;
-                for (int i = 0; i < ropeAnchorWithRope.rope.charactersClimbing.Count; i++)
+                var charactersClimbing = ropeAnchorWithRope.rope.charactersClimbing;
+                for (int i = 0; i < charactersClimbing.Count; i++)
                 {
-                    newWeightAdded += 0.2f + ropeAnchorWithRope.rope.charactersClimbing[i].refs.afflictions.currentStatuses[(int)CharacterAfflictions.STATUSTYPE.Weight];
+                    newWeightAdded += 0.2f + charactersClimbing[i].refs.afflictions.currentStatuses[(int)CharacterAfflictions.STATUSTYPE.Weight];
                 }
                 if (newWeightAdded != weightAdded)
                 {
