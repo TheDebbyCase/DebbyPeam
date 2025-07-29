@@ -137,7 +137,7 @@ namespace DebbyPeam.Misc
             if (prepared)
             {
                 float newWeightAdded = 0f;
-                var charactersClimbing = ropeAnchorWithRope.rope.charactersClimbing;
+                var charactersClimbing = rope.charactersClimbing;
                 for (int i = 0; i < charactersClimbing.Count; i++)
                 {
                     newWeightAdded += 0.2f + charactersClimbing[i].refs.afflictions.currentStatuses[(int)CharacterAfflictions.STATUSTYPE.Weight];
@@ -156,9 +156,9 @@ namespace DebbyPeam.Misc
         {
             if (PhotonNetwork.IsMasterClient && prepared)
             {
-                if (ropeAnchorWithRope.rope.charactersClimbing.Count > 0)
+                if (rope.charactersClimbing.Count > 0)
                 {
-                    Vector3 ropeNormal = ropeAnchorWithRope.rope.GetRopeSegments()[0].position - playerOwner.GetBodypart(BodypartType.Hip).transform.position;
+                    Vector3 ropeNormal = rope.GetRopeSegments()[0].position - playerOwner.GetBodypart(BodypartType.Hip).transform.position;
                     ropeNormal *= playerDragForce;
                     playerOwner.AddForceToBodyPart(playerOwner.GetBodypartRig(BodypartType.Hip), ropeNormal * 0.2f, ropeNormal);
                 }
@@ -166,9 +166,9 @@ namespace DebbyPeam.Misc
         }
         public void OnDestroy()
         {
-            if (rope != null)
+            if (rope != null && PhotonNetwork.IsMasterClient)
             {
-                rope.Clear(true);
+                PhotonNetwork.Destroy(rope.gameObject);
             }
             if (trouserRopeDictionary.ContainsKey(playerOwner))
             {
