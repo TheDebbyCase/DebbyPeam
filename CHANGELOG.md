@@ -1,3 +1,6 @@
+## 0.0.6
+- Made an error in my previous update where if one player left all trouser ropes would be deleted, fixed that
+
 ## 0.0.5
 - Attempted to fix Trouser Ropes in multiplayer
 

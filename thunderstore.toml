@@ -1,10 +1,10 @@
 [config]
-schemaVersion = "0.0.5"
+schemaVersion = "0.0.6"
 
 [package]
 namespace = "deB"
 name = "Debby_Peam"
-versionNumber = "0.0.5"
+versionNumber = "0.0.6"
 description = "Adds content!"
 websiteUrl = "https://github.com/TheDebbyCase/DebbyPeam"
 containsNsfwContent = false

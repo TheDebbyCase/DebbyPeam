@@ -22,7 +22,7 @@ namespace DebbyPeam.Misc
         }
         public void RopeOwnerDisconnect(Character character)
         {
-            if (PhotonNetwork.IsMasterClient)
+            if (PhotonNetwork.IsMasterClient && trouserRopeDictionary[character] == this)
             {
                 log.LogDebug($"Destroying \"{character.characterName}\"'s trouser rope!");
                 PhotonNetwork.Destroy(gameObject);
