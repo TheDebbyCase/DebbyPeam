@@ -93,7 +93,18 @@ namespace DebbyPeam.Misc
         }
         public IEnumerator WaitForRopeSegments()
         {
-            yield return new WaitUntil(() => rope != null);
+            //rope = null;
+            while (rope == null)
+            {
+                var ropeInstance = ropeAnchorWithRope.ropeInstance;
+                if (ropeInstance == null)
+                {
+                    yield return null;
+                    continue;
+                }
+                rope = ropeInstance.GetComponent<Rope>();
+                yield return null;
+            }
             yield return new WaitUntil(() => rope.GetRopeSegments().Count > 0);
             List<Transform> segments = rope.GetRopeSegments();
             ConfigurableJoint joint = segments[0].GetComponent<ConfigurableJoint>();
