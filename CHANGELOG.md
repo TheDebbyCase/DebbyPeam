@@ -1,3 +1,6 @@
+## 0.0.5
+- Attempted to fix Trouser Ropes in multiplayer
+
 ## 0.0.4
 - Actually fixed preview images in the README
 

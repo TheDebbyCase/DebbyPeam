@@ -1,8 +1,8 @@
 ﻿using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Zorro.ControllerSupport.Rumble.RumbleClip;
 namespace DebbyPeam.Misc
 {
     public class TrouserRope : MonoBehaviour
@@ -15,6 +15,19 @@ namespace DebbyPeam.Misc
         public Rope rope;
         public float weightAdded = 0f;
         public float playerDragForce = 100f;
+        public bool prepared = false;
+        public void Start()
+        {
+            GlobalEvents.OnCharacterOwnerDisconnected = (Action<Character>)Delegate.Combine(GlobalEvents.OnCharacterOwnerDisconnected, new Action<Character>(RopeOwnerDisconnect));
+        }
+        public void RopeOwnerDisconnect(Character character)
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                log.LogDebug($"Destroying \"{character.characterName}\"'s trouser rope!");
+                PhotonNetwork.Destroy(gameObject);
+            }
+        }
         public void Initialize(int id)
         {
             if (Character.GetCharacterWithPhotonID(id, out playerOwner))
@@ -31,11 +44,8 @@ namespace DebbyPeam.Misc
         [PunRPC]
         public void InitializeRPC(int id)
         {
-            if (playerOwner == null)
-            {
-                Character.GetCharacterWithPhotonID(id, out playerOwner);
-                PrepareRope();
-            }
+            Character.GetCharacterWithPhotonID(id, out playerOwner);
+            PrepareRope();
         }
         public void PrepareRope()
         {
@@ -49,7 +59,7 @@ namespace DebbyPeam.Misc
             DebbyPeam.instance.utils.FixShaders(ropeAnchorWithRope.ropePrefab);
             if (PhotonNetwork.IsMasterClient)
             {
-                ropeAnchorWithRope.ropeSegmentLength = Random.Range(2f, 10f);
+                ropeAnchorWithRope.ropeSegmentLength = UnityEngine.Random.Range(2f, 10f);
                 ropeAnchorWithRope.spoolOutTime = 1.5f * Mathf.Clamp(ropeAnchorWithRope.ropeSegmentLength / 5f, 1f, 2f);
                 log.LogDebug($"Master Client spawning rope with length: \"{ropeAnchorWithRope.ropeSegmentLength}\" and spool time of: \"{ropeAnchorWithRope.spoolOutTime}\"");
                 ropeAnchorWithRope.SpawnRope();
@@ -85,26 +95,37 @@ namespace DebbyPeam.Misc
                 materials[i].SetColor("_Color21", playerOwner.refs.customization.PlayerColor);
                 materials[i].SetColor("_Color3", playerOwner.refs.customization.PlayerColor);
             }
+            prepared = true;
         }
         public void Update()
         {
-            float newWeightAdded = 0f;
-            for (int i = 0; i < ropeAnchorWithRope.rope.charactersClimbing.Count; i++)
+            if (prepared)
             {
-                newWeightAdded += 0.2f + ropeAnchorWithRope.rope.charactersClimbing[i].refs.afflictions.currentStatuses[(int)CharacterAfflictions.STATUSTYPE.Weight];
-            }
-            if (newWeightAdded != weightAdded)
-            {
-                weightAdded = newWeightAdded;
+                float newWeightAdded = 0f;
+                for (int i = 0; i < ropeAnchorWithRope.rope.charactersClimbing.Count; i++)
+                {
+                    newWeightAdded += 0.2f + ropeAnchorWithRope.rope.charactersClimbing[i].refs.afflictions.currentStatuses[(int)CharacterAfflictions.STATUSTYPE.Weight];
+                }
+                if (newWeightAdded != weightAdded)
+                {
+                    weightAdded = newWeightAdded;
+                }
+                if (PhotonNetwork.IsMasterClient && playerOwner == null)
+                {
+                    PhotonNetwork.Destroy(gameObject);
+                }
             }
         }
         public void FixedUpdate()
         {
-            if (PhotonNetwork.IsMasterClient && ropeAnchorWithRope.rope.charactersClimbing.Count > 0)
+            if (PhotonNetwork.IsMasterClient && prepared)
             {
-                Vector3 ropeNormal = ropeAnchorWithRope.rope.GetRopeSegments()[0].position - playerOwner.GetBodypart(BodypartType.Hip).transform.position;
-                ropeNormal *= playerDragForce;
-                playerOwner.AddForceToBodyPart(playerOwner.GetBodypartRig(BodypartType.Hip), ropeNormal * 0.2f, ropeNormal);
+                if (ropeAnchorWithRope.rope.charactersClimbing.Count > 0)
+                {
+                    Vector3 ropeNormal = ropeAnchorWithRope.rope.GetRopeSegments()[0].position - playerOwner.GetBodypart(BodypartType.Hip).transform.position;
+                    ropeNormal *= playerDragForce;
+                    playerOwner.AddForceToBodyPart(playerOwner.GetBodypartRig(BodypartType.Hip), ropeNormal * 0.2f, ropeNormal);
+                }
             }
         }
         public void OnDestroy()
@@ -113,7 +134,7 @@ namespace DebbyPeam.Misc
             {
                 rope.Clear();
             }
-            if (playerOwner != null)
+            if (trouserRopeDictionary.ContainsKey(playerOwner))
             {
                 trouserRopeDictionary.Remove(playerOwner);
             }
