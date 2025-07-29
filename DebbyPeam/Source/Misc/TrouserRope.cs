@@ -95,13 +95,16 @@ namespace DebbyPeam.Misc
         {
             //rope = null;
             yield return new WaitUntil(() => rope != null);
-            yield return new WaitUntil(() => rope.GetRopeSegments().Count > 0);
-            List<Transform> segments = rope.GetRopeSegments();
-            ConfigurableJoint joint = segments[0].GetComponent<ConfigurableJoint>();
-            joint.connectedBody = ropeAnchorWithRope.anchor.anchorPoint.gameObject.AddComponent<Rigidbody>();
-            joint.connectedBody.constraints = RigidbodyConstraints.FreezePosition;
-            joint.connectedBody.angularDamping = 0.1f;
-            joint.connectedBody.linearDamping = 0.1f;
+            if (PhotonNetwork.IsMasterClient)
+            {
+                yield return new WaitUntil(() => rope.GetRopeSegments().Count > 0);
+                List<Transform> segments = rope.GetRopeSegments();
+                ConfigurableJoint joint = segments[0].GetComponent<ConfigurableJoint>();
+                joint.connectedBody = ropeAnchorWithRope.anchor.anchorPoint.gameObject.AddComponent<Rigidbody>();
+                joint.connectedBody.constraints = RigidbodyConstraints.FreezePosition;
+                joint.connectedBody.angularDamping = 0.1f;
+                joint.connectedBody.linearDamping = 0.1f;
+            }
             var trouserRope = trouserRopeDictionary[playerOwner];
             var trouserRopeRope = trouserRope.rope;
             while (trouserRopeRope == null)
@@ -165,7 +168,7 @@ namespace DebbyPeam.Misc
         {
             if (rope != null)
             {
-                rope.Clear();
+                rope.Clear(true);
             }
             if (trouserRopeDictionary.ContainsKey(playerOwner))
             {
