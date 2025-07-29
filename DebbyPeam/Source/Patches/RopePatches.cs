@@ -27,7 +27,7 @@ namespace DebbyPeam.Patches
                     {
                         TrouserRope trouserRope = TrouserRope.trouserRopeDictionary[players[i]];
                         trouserRope.photonView.RPC("InitializeRPC", newPlayer, players[i].photonView.ViewID);
-                        trouserRope.photonView.RPC("GetRopeRPC", newPlayer, trouserRope.rope);
+                        trouserRope.photonView.RPC("GetRopeRPC", newPlayer, trouserRope.rope.photonView.ViewID);
                     }
                 }
             }
