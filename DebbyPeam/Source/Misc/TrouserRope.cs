@@ -78,8 +78,8 @@ namespace DebbyPeam.Misc
                 ropeAnchorWithRope.ropeSegmentLength = UnityEngine.Random.Range(2f, 10f);
                 ropeAnchorWithRope.spoolOutTime = 1.5f * Mathf.Clamp(ropeAnchorWithRope.ropeSegmentLength / 5f, 1f, 2f);
                 log.LogDebug($"Master Client spawning rope with length: \"{ropeAnchorWithRope.ropeSegmentLength}\" and spool time of: \"{ropeAnchorWithRope.spoolOutTime}\"");
-                Rope newRope = ropeAnchorWithRope.SpawnRope();
-                photonView.RPC("GetRopeRPC", RpcTarget.Others, newRope.photonView.ViewID);
+                rope = ropeAnchorWithRope.SpawnRope();
+                photonView.RPC("GetRopeRPC", RpcTarget.Others, rope.photonView.ViewID);
             }
             transform.parent = playerOwner.GetBodypart(BodypartType.Hip).transform;
             transform.localPosition = new Vector3(0f, -2f, 0.5f);
