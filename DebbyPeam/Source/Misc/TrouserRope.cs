@@ -78,21 +78,22 @@ namespace DebbyPeam.Misc
                 ropeAnchorWithRope.ropeSegmentLength = UnityEngine.Random.Range(2f, 10f);
                 ropeAnchorWithRope.spoolOutTime = 1.5f * Mathf.Clamp(ropeAnchorWithRope.ropeSegmentLength / 5f, 1f, 2f);
                 log.LogDebug($"Master Client spawning rope with length: \"{ropeAnchorWithRope.ropeSegmentLength}\" and spool time of: \"{ropeAnchorWithRope.spoolOutTime}\"");
-                ropeAnchorWithRope.SpawnRope();
+                Rope newRope = ropeAnchorWithRope.SpawnRope();
+                photonView.RPC("GetRopeRPC", RpcTarget.Others, newRope.photonView.ViewID);
             }
             transform.parent = playerOwner.GetBodypart(BodypartType.Hip).transform;
             transform.localPosition = new Vector3(0f, -2f, 0.5f);
             log.LogDebug($"Setting Rope parent to player: \"{playerOwner.characterName}\"");
             StartCoroutine(WaitForRopeSegments());
         }
+        [PunRPC]
+        public void GetRopeRPC(int viewID)
+        {
+            rope = PhotonView.Find(viewID).GetComponent<Rope>();
+        }
         public IEnumerator WaitForRopeSegments()
         {
-            //rope = null;
-            while (rope == null)
-            {
-                rope = ropeAnchorWithRope.ropeInstance.GetComponent<Rope>();
-                yield return null;
-            }
+            yield return new WaitUntil(() => rope != null);
             yield return new WaitUntil(() => rope.GetRopeSegments().Count > 0);
             List<Transform> segments = rope.GetRopeSegments();
             ConfigurableJoint joint = segments[0].GetComponent<ConfigurableJoint>();
