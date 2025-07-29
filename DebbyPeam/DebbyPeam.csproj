@@ -3,7 +3,7 @@
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<OutputType>Library</OutputType>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<OutputPath>Builds\</OutputPath>
+		<!--<OutputPath>Builds\</OutputPath>-->
 		<AssemblyTitle>REPOWildCardMod</AssemblyTitle>
 		<Company>Scan Computers</Company>
 		<Product>REPOWildCardMod</Product>
@@ -12,199 +12,51 @@
 		<FileVersion>1.0.0.0</FileVersion>
 		<UnityProjectPath>$(MSBuildProjectDirectory)\..\..\..\Unity\Peak Template</UnityProjectPath>
 		<UnityInstallRootPath>D:\Unity\Unity Editor</UnityInstallRootPath>
-		<BaseOutputPath>D:\Stuff\Peak\Project\Builds</BaseOutputPath>
-		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+		<!--<BaseOutputPath>D:\Stuff\Peak\Project\Builds</BaseOutputPath>-->
+		<!--<ProduceReferenceAssembly>False</ProduceReferenceAssembly>-->
 		<MSBuildWarningsAsMessages>$(MSBuildWarningsAsMessages);NCP0001</MSBuildWarningsAsMessages>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<DebugType>embedded</DebugType>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<DebugType>embedded</DebugType>
+		<RestoreAdditionalProjectSources>
+			https://api.nuget.org/v3/index.json;
+			https://nuget.bepinex.dev/v3/index.json;
+			https://nuget.samboy.dev/v3/index.json
+		</RestoreAdditionalProjectSources>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="BepInEx.PluginInfoProps" Version="2.1.0" />
-		<PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.1">
+		<!--<PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.1">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
+		</PackageReference>-->
 		<PackageReference Include="PEAKModding.PEAKLib.Core" Version="1.2.0" Publicize="true" />
 		<PackageReference Include="PEAKModding.PEAKLib.Items" Version="1.3.0" Publicize="true" />
 		<PackageReference Include="PEAKModding.PEAKLib.Stats" Version="1.2.0" Publicize="true" />
 		<PackageReference Include="PEAKModding.PEAKLib.UI" Version="1.3.0" Publicize="true" />
-		<PackageReference Include="UnityEngine.Modules" Version="6000.0.36">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
+		<PackageReference Include="UnityEngine.Modules" Version="6000.0.36" IncludeAssets="compile"/>
+        <PackageReference Include="Krafs.Publicizer" Version="2.3.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
 	</ItemGroup>
+
+    <ItemGroup>
+        <Publicize Include="Assembly-CSharp" />
+        <Publicize Include="Zorro.Core.Runtime" />
+        <Publicize Include="com.github.PEAKModding.PEAKLib.Items" />
+    </ItemGroup>
+
+    <PropertyGroup>
+        <PublicizerRuntimeStrategies>Unsafe</PublicizerRuntimeStrategies>
+    </PropertyGroup>
 	<ItemGroup>
-	  <Reference Include="0Harmony">
-	    <HintPath>Builds\netstandard2.1\0Harmony.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Ashley.MeshSplitter">
-	    <HintPath>Builds\netstandard2.1\Ashley.MeshSplitter.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Assembly-CSharp" Publicize="true" >
-	    <HintPath>..\..\..\Steam\steamapps\common\PEAK\PEAK_Data\Managed\Assembly-CSharp.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Assembly-CSharp-firstpass">
-	    <HintPath>Builds\netstandard2.1\Assembly-CSharp-firstpass.dll</HintPath>
-	  </Reference>
-	  <Reference Include="BepInEx">
-	    <HintPath>Builds\netstandard2.1\BepInEx.dll</HintPath>
-	  </Reference>
-	  <Reference Include="BepInEx.Harmony">
-	    <HintPath>Builds\netstandard2.1\BepInEx.Harmony.dll</HintPath>
-	  </Reference>
-	  <Reference Include="BepInEx.Preloader">
-	    <HintPath>Builds\netstandard2.1\BepInEx.Preloader.dll</HintPath>
-	  </Reference>
-	  <Reference Include="com.rlabrecque.steamworks.net">
-	    <HintPath>Builds\netstandard2.1\com.rlabrecque.steamworks.net.dll</HintPath>
-	  </Reference>
-	  <Reference Include="DemiLib">
-	    <HintPath>Builds\netstandard2.1\DemiLib.dll</HintPath>
-	  </Reference>
-	  <Reference Include="DOTween">
-	    <HintPath>Builds\netstandard2.1\DOTween.dll</HintPath>
-	  </Reference>
-	  <Reference Include="DOTweenPro">
-	    <HintPath>Builds\netstandard2.1\DOTweenPro.dll</HintPath>
-	  </Reference>
-	  <Reference Include="HarmonyXInterop">
-	    <HintPath>Builds\netstandard2.1\HarmonyXInterop.dll</HintPath>
-	  </Reference>
-	  <Reference Include="HBAO.Runtime">
-	    <HintPath>Builds\netstandard2.1\HBAO.Runtime.dll</HintPath>
-	  </Reference>
-	  <Reference Include="HBAO.Universal.Runtime">
-	    <HintPath>Builds\netstandard2.1\HBAO.Universal.Runtime.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Mono.Cecil">
-	    <HintPath>Builds\netstandard2.1\Mono.Cecil.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Mono.Cecil.Mdb">
-	    <HintPath>Builds\netstandard2.1\Mono.Cecil.Mdb.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Mono.Cecil.Pdb">
-	    <HintPath>Builds\netstandard2.1\Mono.Cecil.Pdb.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Mono.Cecil.Rocks">
-	    <HintPath>Builds\netstandard2.1\Mono.Cecil.Rocks.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Mono.Security">
-	    <HintPath>Builds\netstandard2.1\Mono.Security.dll</HintPath>
-	  </Reference>
-	  <Reference Include="MonoMod.RuntimeDetour">
-	    <HintPath>Builds\netstandard2.1\MonoMod.RuntimeDetour.dll</HintPath>
-	  </Reference>
-	  <Reference Include="MonoMod.Utils">
-	    <HintPath>Builds\netstandard2.1\MonoMod.Utils.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Photon3Unity3D">
-	    <HintPath>Builds\netstandard2.1\Photon3Unity3D.dll</HintPath>
-	  </Reference>
-	  <Reference Include="PhotonChat">
-	    <HintPath>Builds\netstandard2.1\PhotonChat.dll</HintPath>
-	  </Reference>
-	  <Reference Include="PhotonRealtime">
-	    <HintPath>Builds\netstandard2.1\PhotonRealtime.dll</HintPath>
-	  </Reference>
-	  <Reference Include="PhotonUnityNetworking">
-	    <HintPath>Builds\netstandard2.1\PhotonUnityNetworking.dll</HintPath>
-	  </Reference>
-	  <Reference Include="PhotonUnityNetworking.Demos">
-	    <HintPath>Builds\netstandard2.1\PhotonUnityNetworking.Demos.dll</HintPath>
-	  </Reference>
-	  <Reference Include="PhotonUnityNetworking.Utilities">
-	    <HintPath>Builds\netstandard2.1\PhotonUnityNetworking.Utilities.dll</HintPath>
-	  </Reference>
-	  <Reference Include="PhotonVoice">
-	    <HintPath>Builds\netstandard2.1\PhotonVoice.dll</HintPath>
-	  </Reference>
-	  <Reference Include="PhotonVoice.API">
-	    <HintPath>Builds\netstandard2.1\PhotonVoice.API.dll</HintPath>
-	  </Reference>
-	  <Reference Include="PhotonVoice.PUN">
-	    <HintPath>Builds\netstandard2.1\PhotonVoice.PUN.dll</HintPath>
-	  </Reference>
-	  <Reference Include="pworld">
-	    <HintPath>Builds\netstandard2.1\pworld.dll</HintPath>
-	  </Reference>
-	  <Reference Include="sc.posteffects.runtime">
-	    <HintPath>Builds\netstandard2.1\sc.posteffects.runtime.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Sirenix.OdinInspector.Attributes">
-	    <HintPath>Builds\netstandard2.1\Sirenix.OdinInspector.Attributes.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Sirenix.OdinInspector.Modules.Unity.Addressables">
-	    <HintPath>Builds\netstandard2.1\Sirenix.OdinInspector.Modules.Unity.Addressables.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Sirenix.OdinInspector.Modules.UnityLocalization">
-	    <HintPath>Builds\netstandard2.1\Sirenix.OdinInspector.Modules.UnityLocalization.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Sirenix.Serialization">
-	    <HintPath>Builds\netstandard2.1\Sirenix.Serialization.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Sirenix.Serialization.Config">
-	    <HintPath>Builds\netstandard2.1\Sirenix.Serialization.Config.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Sirenix.Utilities">
-	    <HintPath>Builds\netstandard2.1\Sirenix.Utilities.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Tayx.Graphy">
-	    <HintPath>Builds\netstandard2.1\Tayx.Graphy.dll</HintPath>
-	  </Reference>
-	  <Reference Include="UnityEngine">
-	    <HintPath>Builds\netstandard2.1\UnityEngine.dll</HintPath>
-	  </Reference>
-	  <Reference Include="UnityEngine.AnimationModule">
-	    <HintPath>..\..\..\Unity\Unity Editor\6000.0.36f1\Editor\Data\Managed\UnityEngine\UnityEngine.AnimationModule.dll</HintPath>
-	  </Reference>
-	  <Reference Include="UnityEngine.AssetBundleModule">
-	    <HintPath>Builds\netstandard2.1\UnityEngine.AssetBundleModule.dll</HintPath>
-	  </Reference>
-	  <Reference Include="UnityEngine.CoreModule">
-	    <HintPath>Builds\netstandard2.1\UnityEngine.CoreModule.dll</HintPath>
-	  </Reference>
-	  <Reference Include="UnityEngine.ParticleSystemModule">
-	    <HintPath>..\..\..\Unity\Unity Editor\6000.0.36f1\Editor\Data\Managed\UnityEngine\UnityEngine.ParticleSystemModule.dll</HintPath>
-	  </Reference>
-	  <Reference Include="UnityEngine.PhysicsModule">
-	    <HintPath>..\..\..\Unity\Unity Editor\6000.0.36f1\Editor\Data\Managed\UnityEngine\UnityEngine.PhysicsModule.dll</HintPath>
-	  </Reference>
-	  <Reference Include="websocket-sharp">
-	    <HintPath>Builds\netstandard2.1\websocket-sharp.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Whinarn.UnityMeshSimplifier.Runtime">
-	    <HintPath>Builds\netstandard2.1\Whinarn.UnityMeshSimplifier.Runtime.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Zorro.AutoLOD">
-	    <HintPath>Builds\netstandard2.1\Zorro.AutoLOD.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Zorro.ControllerSupport">
-	    <HintPath>Builds\netstandard2.1\Zorro.ControllerSupport.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Zorro.Core.Runtime">
-	    <HintPath>Builds\netstandard2.1\Zorro.Core.Runtime.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Zorro.JiggleBones">
-	    <HintPath>Builds\netstandard2.1\Zorro.JiggleBones.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Zorro.PhotonUtility">
-	    <HintPath>Builds\netstandard2.1\Zorro.PhotonUtility.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Zorro.Settings.Runtime">
-	    <HintPath>Builds\netstandard2.1\Zorro.Settings.Runtime.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Zorro.UI.Runtime">
-	    <HintPath>Builds\netstandard2.1\Zorro.UI.Runtime.dll</HintPath>
-	  </Reference>
+		<!-- generated PEAK reference assemblies -->
+		<Reference Include="..\ref\*.dll">
+			<Private>false</Private>
+		</Reference>
 	</ItemGroup>
-	<Target Name="NetcodePatch" AfterTargets="PostBuildEvent">
+	<!--<Target Name="NetcodePatch" AfterTargets="PostBuildEvent">
 		<Exec Command="netcode-patch -nv 1.5.2 &quot;$(TargetPath)&quot; @(ReferencePathWithRefAssemblies->'&quot;%(Identity)&quot;', ' ')" />
-	</Target>
-	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	</Target>-->
+	<!--<Target Name="PostBuild" AfterTargets="PostBuildEvent">
 		<Exec Command="cmd.exe /c &quot;D:\Stuff\Peak\DebbyPeam\Builds\netstandard2.1\MoveDLL.bat&quot;" />
-	</Target>
+	</Target>-->
 </Project>
