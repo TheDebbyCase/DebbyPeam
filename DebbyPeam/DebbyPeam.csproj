@@ -3,17 +3,15 @@
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<OutputType>Library</OutputType>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<!--<OutputPath>Builds\</OutputPath>-->
-		<AssemblyTitle>REPOWildCardMod</AssemblyTitle>
+		<AssemblyTitle>DebbyPeamMod</AssemblyTitle>
 		<Company>Scan Computers</Company>
-		<Product>REPOWildCardMod</Product>
+		<Product>DebbyPeam</Product>
 		<Copyright>Copyright © Scan Computers 2025</Copyright>
 		<AssemblyVersion>1.0.0.0</AssemblyVersion>
 		<FileVersion>1.0.0.0</FileVersion>
 		<UnityProjectPath>$(MSBuildProjectDirectory)\..\..\..\Unity\Peak Template</UnityProjectPath>
 		<UnityInstallRootPath>D:\Unity\Unity Editor</UnityInstallRootPath>
-		<!--<BaseOutputPath>D:\Stuff\Peak\Project\Builds</BaseOutputPath>-->
-		<!--<ProduceReferenceAssembly>False</ProduceReferenceAssembly>-->
+		<BaseOutputPath>D:\Stuff\Peak\DebbyPeam\Builds</BaseOutputPath>
 		<MSBuildWarningsAsMessages>$(MSBuildWarningsAsMessages);NCP0001</MSBuildWarningsAsMessages>
 		<RestoreAdditionalProjectSources>
 			https://api.nuget.org/v3/index.json;
@@ -23,40 +21,30 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="BepInEx.PluginInfoProps" Version="2.1.0" />
-		<!--<PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.1">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>-->
-		<PackageReference Include="PEAKModding.PEAKLib.Core" Version="1.2.0" Publicize="true" />
-		<PackageReference Include="PEAKModding.PEAKLib.Items" Version="1.3.0" Publicize="true" />
-		<PackageReference Include="PEAKModding.PEAKLib.Stats" Version="1.2.0" Publicize="true" />
-		<PackageReference Include="PEAKModding.PEAKLib.UI" Version="1.3.0" Publicize="true" />
+		<PackageReference Include="PEAKModding.PEAKLib.Core" Version="1.2.0" />
+		<PackageReference Include="PEAKModding.PEAKLib.Items" Version="1.3.0" />
+		<PackageReference Include="PEAKModding.PEAKLib.Stats" Version="1.2.0" />
+		<PackageReference Include="PEAKModding.PEAKLib.UI" Version="1.3.0" />
 		<PackageReference Include="UnityEngine.Modules" Version="6000.0.36" IncludeAssets="compile"/>
         <PackageReference Include="Krafs.Publicizer" Version="2.3.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
 	</ItemGroup>
-
     <ItemGroup>
         <Publicize Include="Assembly-CSharp" />
         <Publicize Include="Zorro.Core.Runtime" />
         <Publicize Include="com.github.PEAKModding.PEAKLib.Items" />
     </ItemGroup>
-
     <PropertyGroup>
         <PublicizerRuntimeStrategies>Unsafe</PublicizerRuntimeStrategies>
     </PropertyGroup>
 	<ItemGroup>
-		<!-- generated PEAK reference assemblies -->
 		<Reference Include="..\ref\*.dll">
 			<Private>false</Private>
 		</Reference>
 	</ItemGroup>
-	<!--<Target Name="NetcodePatch" AfterTargets="PostBuildEvent">
-		<Exec Command="netcode-patch -nv 1.5.2 &quot;$(TargetPath)&quot; @(ReferencePathWithRefAssemblies->'&quot;%(Identity)&quot;', ' ')" />
-	</Target>-->
-	<!--<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Exec Command="cmd.exe /c &quot;D:\Stuff\Peak\DebbyPeam\Builds\netstandard2.1\MoveDLL.bat&quot;" />
-	</Target>-->
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="cmd.exe /c &quot;D:\Stuff\Peak\DebbyPeam\Builds\MoveDLL.bat&quot;" />
+	</Target>
 </Project>

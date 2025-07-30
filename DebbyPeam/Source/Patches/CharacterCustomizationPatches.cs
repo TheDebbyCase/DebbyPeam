@@ -13,15 +13,9 @@ namespace DebbyPeam.Patches
             if (DebbyPeam.instance.ModConfig.trouserRope.Value && TrouserRope.trouserRopeDictionary.ContainsKey(__instance._character))
             {
                 var trouserRope = TrouserRope.trouserRopeDictionary[__instance._character];
-                var rope = trouserRope.rope;
-                if (rope == null)
-                {
-                    // TODO: ...
-                    return;
-                }
                 Material[] materials = new Material[]
                 {
-                    rope.ropeBoneVisualizer.meshRenderer.sharedMaterial,
+                    trouserRope.rope.ropeBoneVisualizer.meshRenderer.sharedMaterial,
                     trouserRope.ropeAnchorWithRope.anchor.normalPart.transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial
                 };
                 for (int i = 0; i < materials.Length; i++)

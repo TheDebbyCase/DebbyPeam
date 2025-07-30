@@ -11,12 +11,11 @@ namespace DebbyPeam.Patches
         {
             if (DebbyPeam.instance.ModConfig.trouserRope.Value && TrouserRope.trouserRopeDictionary.ContainsKey(interactor))
             {
-                var rope = TrouserRope.trouserRopeDictionary[interactor].rope;
+                Rope rope = TrouserRope.trouserRopeDictionary[interactor].rope;
                 if (rope == null)
                 {
                     return true;
                 }
-                
                 if (rope.GetRopeSegments().Contains(__instance.transform))
                 {
                     __result = false;

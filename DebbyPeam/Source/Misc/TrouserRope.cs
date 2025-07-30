@@ -13,28 +13,12 @@ namespace DebbyPeam.Misc
         public Character playerOwner;
         public RopeAnchorWithRope ropeAnchorWithRope;
         public Rope rope;
-        private Lazy<Rope> ropeLazy;
-        public Rope Rope => ropeLazy!.Value;
         public float weightAdded = 0f;
         public float playerDragForce = 100f;
         public bool prepared = false;
         public void Start()
         {
             GlobalEvents.OnCharacterOwnerDisconnected = (Action<Character>)Delegate.Combine(GlobalEvents.OnCharacterOwnerDisconnected, new Action<Character>(RopeOwnerDisconnect));
-            ropeLazy = new Lazy<Rope>(() =>
-            {
-                if (ropeAnchorWithRope == null)
-                {
-                    ropeAnchorWithRope = GetComponent<RopeAnchorWithRope>();
-                }
-
-                if (ropeAnchorWithRope != null)
-                {
-                    return ropeAnchorWithRope.ropeInstance.GetComponent<Rope>();
-                }
-
-                throw new NotImplementedException();
-            });
         }
         public void RopeOwnerDisconnect(Character character)
         {
@@ -93,7 +77,6 @@ namespace DebbyPeam.Misc
         }
         public IEnumerator WaitForRopeSegments()
         {
-            //rope = null;
             yield return new WaitUntil(() => rope != null);
             if (PhotonNetwork.IsMasterClient)
             {
@@ -105,20 +88,12 @@ namespace DebbyPeam.Misc
                 joint.connectedBody.angularDamping = 0.1f;
                 joint.connectedBody.linearDamping = 0.1f;
             }
-            var trouserRope = trouserRopeDictionary[playerOwner];
-            var trouserRopeRope = trouserRope.rope;
-            while (trouserRopeRope == null)
-            {
-                yield return null;
-                trouserRopeRope = trouserRope.rope;
-            }
-
             Material[] materials = new Material[]
             {
-                trouserRopeRope.ropeBoneVisualizer.meshRenderer.sharedMaterial,
-                trouserRope.ropeAnchorWithRope.anchor.normalPart.transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial
+                rope.ropeBoneVisualizer.meshRenderer.sharedMaterial,
+                ropeAnchorWithRope.anchor.normalPart.transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial
             };
-            var charCustomization = playerOwner.refs.customization;
+            CharacterCustomization charCustomization = playerOwner.refs.customization;
             for (int i = 0; i < materials.Length; i++)
             {
                 var material = materials[i];
