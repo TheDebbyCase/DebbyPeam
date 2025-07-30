@@ -37,6 +37,7 @@ I hope to add more soon! Make suggestions on BlueSky!
 
 ## Extra Credits
 
+- [Ninja](https://github.com/Tyler-IN) for helping me debug and fix the Trouser Ropes!
 - [oniimely](https://www.twitch.tv/oniimely) for buying me the game! My goat!
 - [kael](https://bsky.app/profile/kael3.bsky.social) for just being so supportive, I just really wanted to put xem on here!
 - [SunflowerSmith](https://www.twitch.tv/sunflowersmith) for adding my Lethal Company mod to their group's modpack, playing with it on-stream, and making suggestions directly!

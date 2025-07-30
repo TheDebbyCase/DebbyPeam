@@ -20,7 +20,7 @@ namespace DebbyPeam
     {
         internal const string modGUID = "deB.DebbyPeam";
         internal const string modName = "Debby Peam";
-        internal const string modVersion = "0.0.6";
+        internal const string modVersion = "0.0.7";
         readonly Harmony harmony = new Harmony(modGUID);
         internal ManualLogSource log = null!;
         internal ModDefinition modDefinition = null!;

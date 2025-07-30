@@ -11,7 +11,12 @@ namespace DebbyPeam.Patches
         {
             if (DebbyPeam.instance.ModConfig.trouserRope.Value && TrouserRope.trouserRopeDictionary.ContainsKey(interactor))
             {
-                if (TrouserRope.trouserRopeDictionary[interactor].rope.GetRopeSegments().Contains(__instance.transform))
+                Rope rope = TrouserRope.trouserRopeDictionary[interactor].rope;
+                if (rope == null)
+                {
+                    return true;
+                }
+                if (rope.GetRopeSegments().Contains(__instance.transform))
                 {
                     __result = false;
                     return false;

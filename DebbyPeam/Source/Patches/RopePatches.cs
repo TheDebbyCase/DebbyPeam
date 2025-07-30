@@ -25,7 +25,9 @@ namespace DebbyPeam.Patches
                 {
                     if (TrouserRope.trouserRopeDictionary.ContainsKey(players[i]))
                     {
-                        TrouserRope.trouserRopeDictionary[players[i]].photonView.RPC("InitializeRPC", newPlayer, players[i].photonView.ViewID);
+                        TrouserRope trouserRope = TrouserRope.trouserRopeDictionary[players[i]];
+                        trouserRope.photonView.RPC("InitializeRPC", newPlayer, players[i].photonView.ViewID);
+                        trouserRope.photonView.RPC("GetRopeRPC", newPlayer, trouserRope.rope.photonView.ViewID);
                     }
                 }
             }

@@ -5,14 +5,19 @@ VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebbyPeam", "DebbyPeam.csproj", "{596AD07A-6AB8-4E8C-ABC5-1B8544A0BACF}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configuration", "{7A27589B-8205-441E-B6CB-26C0CDA1A63A}"
+	ProjectSection(SolutionItems) = preProject
+		nuget.config = nuget.config
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{596AD07A-6AB8-4E8C-ABC5-1B8544A0BACF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{596AD07A-6AB8-4E8C-ABC5-1B8544A0BACF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{596AD07A-6AB8-4E8C-ABC5-1B8544A0BACF}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{596AD07A-6AB8-4E8C-ABC5-1B8544A0BACF}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{596AD07A-6AB8-4E8C-ABC5-1B8544A0BACF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{596AD07A-6AB8-4E8C-ABC5-1B8544A0BACF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
