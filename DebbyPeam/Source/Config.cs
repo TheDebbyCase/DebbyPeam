@@ -8,11 +8,13 @@ namespace DebbyPeam.Config
     {
         readonly BepInEx.Logging.ManualLogSource log = DebbyPeam.instance.log;
         internal readonly ConfigEntry<bool> trouserRope;
+        internal readonly ConfigEntry<bool> throwableSkull;
         internal readonly List<ConfigEntry<bool>> isItemEnabled = new List<ConfigEntry<bool>>();
         internal DebbyPeamConfig(ConfigFile cfg, List<Item> itemsList)
         {
             cfg.SaveOnConfigSet = false;
             trouserRope = cfg.Bind("Miscellaneous", "Enable Trouser Ropes?", false, "When true players will spawn in with a rope attached to them");
+            throwableSkull = cfg.Bind("Miscellaneous", "Enable Throwable Cursed Skull?", true, "When true, throwing a Cursed Skull at someone will use it on them");
             log.LogDebug("Added config for Trouser Rope");
             for (int i = 0; i < itemsList.Count; i++)
             {

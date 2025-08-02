@@ -1,3 +1,6 @@
+## 0.1.0
+- Made Cursed Skulls throwable!
+
 ## 0.0.7
 - Fixed Trouser Ropes in multiplayer!
 

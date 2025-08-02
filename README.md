@@ -32,6 +32,15 @@ or the GitHub page [here](https://github.com/TheDebbyCase/DebbyPeam)!
 	![Preview](https://raw.githubusercontent.com/TheDebbyCase/DebbyPeam/refs/heads/master/Images/TrouserRopePreview.png)
 	
 	</details>
+
+	<details>
+	<summary>Throwable Cursed Skull</summary>
+	
+	Weaponize death.
+	
+	Video available on (TBD)
+	
+	</details>
 	
 I hope to add more soon! Make suggestions on BlueSky!
 
