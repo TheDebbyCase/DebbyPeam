@@ -1,3 +1,7 @@
+## 0.1.2
+- Tested and fixed throwable cursed skulls at least in singleplayer, should now work in multiplayer!
+- Fixed trouser rope dictionary not removing gone or dead players correctly
+
 ## 0.1.1
 - Forgot to make the changes work...
 

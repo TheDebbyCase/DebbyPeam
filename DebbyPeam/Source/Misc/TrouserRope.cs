@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 namespace DebbyPeam.Misc
 {
@@ -145,9 +146,27 @@ namespace DebbyPeam.Misc
             {
                 PhotonNetwork.Destroy(rope.gameObject);
             }
-            if (trouserRopeDictionary.ContainsKey(playerOwner))
+            if (playerOwner != null && trouserRopeDictionary.ContainsKey(playerOwner))
             {
                 trouserRopeDictionary.Remove(playerOwner);
+            }
+            else
+            {
+                List<Character> characterKeys = trouserRopeDictionary.Keys.ToList();
+                Dictionary<Character, TrouserRope> newDict = new Dictionary<Character, TrouserRope>();
+                for (int i = 0; i < characterKeys.Count; i++)
+                {
+                    if (characterKeys[i] == null)
+                    {
+                        characterKeys.RemoveAt(i);
+                        i--;
+                    }
+                    else
+                    {
+                        newDict.Add(characterKeys[i], trouserRopeDictionary[characterKeys[i]]);
+                    }
+                }
+                trouserRopeDictionary = newDict;
             }
         }
     }

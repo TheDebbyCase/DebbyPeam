@@ -11,6 +11,8 @@ using DebbyPeam.Patches;
 using PEAKLib.Core;
 using PEAKLib.Items;
 using DebbyPeam.Utils;
+using Photon.Pun;
+using System.Linq;
 namespace DebbyPeam
 {
     [BepInPlugin(modGUID, modName, modVersion)]
@@ -20,14 +22,14 @@ namespace DebbyPeam
     {
         internal const string modGUID = "deB.DebbyPeam";
         internal const string modName = "Debby Peam";
-        internal const string modVersion = "0.1.1";
+        internal const string modVersion = "0.1.2";
         readonly Harmony harmony = new Harmony(modGUID);
         internal ManualLogSource log = null!;
         internal ModDefinition modDefinition = null!;
         public DebbyPeamUtils utils;
         public static DebbyPeam instance;
         public List<Item> itemsList = new List<Item>();
-        public List<GameObject> miscPrefabsList = new List<GameObject>();
+        public Dictionary<string, GameObject> miscPrefabsList = new Dictionary<string, GameObject>();
         internal DebbyPeamConfig ModConfig { get; private set; } = null!;
         public void Awake()
         {
@@ -85,7 +87,7 @@ namespace DebbyPeam
                             {
                                 case GameObject go:
                                     {
-                                        miscPrefabsList.Add(go);
+                                        miscPrefabsList.Add(go.name, go);
                                         break;
                                     }
                                 default:
@@ -126,10 +128,11 @@ namespace DebbyPeam
         }
         public void HandleMisc()
         {
-            for (int i = 0; i < miscPrefabsList.Count; i++)
+            string[] miscNames = miscPrefabsList.Keys.ToArray();
+            for (int i = 0; i < miscNames.Length; i++)
             {
-                NetworkPrefabManager.RegisterNetworkPrefab($"Misc/{miscPrefabsList[i].name}", miscPrefabsList[i]);
-                log.LogDebug($"{miscPrefabsList[i].name} prefab was loaded!");
+                NetworkPrefabManager.RegisterNetworkPrefab($"Misc/{miscNames[i]}", miscPrefabsList[miscNames[i]]);
+                log.LogDebug($"{miscNames[i]} prefab was loaded!");
             }
         }
         public void DoPatches()
