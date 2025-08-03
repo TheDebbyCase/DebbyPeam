@@ -20,7 +20,7 @@ namespace DebbyPeam
     {
         internal const string modGUID = "deB.DebbyPeam";
         internal const string modName = "Debby Peam";
-        internal const string modVersion = "0.1.0";
+        internal const string modVersion = "0.1.1";
         readonly Harmony harmony = new Harmony(modGUID);
         internal ManualLogSource log = null!;
         internal ModDefinition modDefinition = null!;
@@ -142,6 +142,7 @@ namespace DebbyPeam
                 harmony.PatchAll(typeof(CharacterCustomizationPatches));
                 harmony.PatchAll(typeof(RopePatches));
                 harmony.PatchAll(typeof(RopeSegmentPatches));
+                harmony.PatchAll(typeof(ItemPatches));
             }
             else
             {

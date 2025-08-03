@@ -1,3 +1,6 @@
+## 0.1.1
+- Forgot to make the changes work...
+
 ## 0.1.0
 - Made Cursed Skulls throwable!
 
