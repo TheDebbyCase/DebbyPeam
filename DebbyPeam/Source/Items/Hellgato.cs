@@ -1,5 +1,4 @@
 ﻿using Photon.Pun;
-using System.Collections.Generic;
 using UnityEngine;
 namespace DebbyPeam.Items
 {
@@ -10,13 +9,13 @@ namespace DebbyPeam.Items
         public override void GenerateEvents()
         {
             base.GenerateEvents();
-            randomTimeTriggers.Add(new RandomAnimation() { timer = 0f, minimumTime = 3f, maximumTime = 7f, triggerableStates = new List<ItemState>() { ItemState.Ground, ItemState.Held, ItemState.InBackpack }, animationValueType = ValueType.None, animationName = "Ear Flick", animationValue = string.Empty, randomValue = false, randomMin = 0f, randomMax = 0f });
-            randomTimeTriggers.Add(new RandomAnimation() { timer = 0f, minimumTime = 2f, maximumTime = 5f, triggerableStates = new List<ItemState>() { ItemState.Ground, ItemState.Held, ItemState.InBackpack }, animationValueType = ValueType.None, animationName = "Blink", animationValue = string.Empty, randomValue = false, randomMin = 0f, randomMax = 0f });
-            randomTimeTriggers.Add(new RandomAnimation() { timer = 0f, minimumTime = 3f, maximumTime = 5f, triggerableStates = new List<ItemState>() { ItemState.Ground, ItemState.Held, ItemState.InBackpack }, animationValueType = ValueType.None, animationName = "Paw Twitch", animationValue = string.Empty, randomValue = false, randomMin = 0f, randomMax = 0f });
-            randomTimeTriggers.Add(new RandomAnimation() { timer = 0f, minimumTime = 0.5f, maximumTime = 1f, triggerableStates = new List<ItemState>() { ItemState.Ground, ItemState.Held, ItemState.InBackpack }, animationValueType = ValueType.Integer, animationName = "Ear Side", animationValue = string.Empty, randomValue = true, randomMin = 0f, randomMax = 1.5f });
-            randomTimeTriggers.Add(new RandomAnimation() { timer = 0f, minimumTime = 0.5f, maximumTime = 1f, triggerableStates = new List<ItemState>() { ItemState.Ground, ItemState.Held, ItemState.InBackpack }, animationValueType = ValueType.Integer, animationName = "Paw Side", animationValue = string.Empty, randomValue = true, randomMin = 0f, randomMax = 3.5f });
-            randomTimeTriggers.Add(new RandomAnimation() { timer = 0f, minimumTime = 7.5f, maximumTime = 15f, triggerableStates = new List<ItemState>() { ItemState.Ground, ItemState.Held, ItemState.InBackpack }, animationValueType = ValueType.None, animationName = "Meow", animationValue = string.Empty, randomValue = false, randomMin = 0f, randomMax = 0f });
-            randomTimeTriggers.Add(new RandomAnimation() { timer = 0f, minimumTime = 5f, maximumTime = 10f, triggerableStates = new List<ItemState>() { ItemState.Ground, ItemState.Held, ItemState.InBackpack }, animationValueType = ValueType.None, animationName = "Closest Player Check", animationValue = string.Empty, randomValue = false, randomMin = 0f, randomMax = 0f });
+            CreateRepeatAnim("Ear Flick", min: 3f, max: 7f);
+            CreateRepeatAnim("Blink", min: 2f, max: 5f);
+            CreateRepeatAnim("Paw Twitch", min: 3f, max: 5f);
+            CreateRepeatAnim("Ear Side", min: 0.5f, max: 1f, randMax: 1f);
+            CreateRepeatAnim("Paw Side", min: 0.5f, max: 1f, randMax: 3f);
+            CreateRepeatAnim("Meow", min: 7.5f, max: 15f);
+            CreateRepeatAnim("Closest Player Check", min: 5f, max: 10f);
         }
         public override void FixedUpdate()
         {

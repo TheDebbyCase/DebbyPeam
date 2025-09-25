@@ -11,7 +11,6 @@ using DebbyPeam.Patches;
 using PEAKLib.Core;
 using PEAKLib.Items;
 using DebbyPeam.Utils;
-using Photon.Pun;
 using System.Linq;
 namespace DebbyPeam
 {
@@ -22,7 +21,7 @@ namespace DebbyPeam
     {
         internal const string modGUID = "deB.DebbyPeam";
         internal const string modName = "Debby Peam";
-        internal const string modVersion = "0.1.2";
+        internal const string modVersion = "0.1.4";
         readonly Harmony harmony = new Harmony(modGUID);
         internal ManualLogSource log = null!;
         internal ModDefinition modDefinition = null!;
@@ -145,11 +144,20 @@ namespace DebbyPeam
                 harmony.PatchAll(typeof(CharacterCustomizationPatches));
                 harmony.PatchAll(typeof(RopePatches));
                 harmony.PatchAll(typeof(RopeSegmentPatches));
-                harmony.PatchAll(typeof(ItemPatches));
+                harmony.PatchAll(typeof(CharacterRopeHandlingPatches));
+                harmony.PatchAll(typeof(LoadingScreenHandlerPatches));
             }
             else
             {
                 log.LogInfo("Trouser Rope is disabled, skipping related patches");
+            }
+            if (ModConfig.throwableSkull.Value)
+            {
+                harmony.PatchAll(typeof(ItemPatches));
+            }
+            else
+            {
+                log.LogInfo("Throwable Skull is disabled, skipping related patches");
             }
         }
     }

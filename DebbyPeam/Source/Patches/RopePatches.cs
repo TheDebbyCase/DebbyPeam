@@ -11,6 +11,10 @@ namespace DebbyPeam.Patches
         [HarmonyPostfix]
         public static void FixRopeShaders(Rope __instance)
         {
+            if (!DebbyPeam.instance.ModConfig.trouserRope.Value)
+            {
+                return;
+            }
             DebbyPeam.instance.utils.FixShaders(__instance.ropeSegmentPrefab);
             DebbyPeam.instance.utils.FixShaders(__instance.remoteSegmentPrefab);
         }
@@ -18,6 +22,10 @@ namespace DebbyPeam.Patches
         [HarmonyPostfix]
         public static void PlayerJoinSync(ref Photon.Realtime.Player newPlayer)
         {
+            if (!DebbyPeam.instance.ModConfig.trouserRope.Value)
+            {
+                return;
+            }
             if (PhotonNetwork.IsMasterClient && TrouserRope.trouserRopeDictionary.Count > 0)
             {
                 List<Character> players = Character.AllCharacters;

@@ -10,7 +10,11 @@ namespace DebbyPeam.Patches
         [HarmonyPostfix]
         public static void ChangeRopeColour(CharacterCustomization __instance)
         {
-            if (DebbyPeam.instance.ModConfig.trouserRope.Value && TrouserRope.trouserRopeDictionary.ContainsKey(__instance._character))
+            if (!DebbyPeam.instance.ModConfig.trouserRope.Value)
+            {
+                return;
+            }
+            if (TrouserRope.trouserRopeDictionary.ContainsKey(__instance._character))
             {
                 var trouserRope = TrouserRope.trouserRopeDictionary[__instance._character];
                 Material[] materials = new Material[]

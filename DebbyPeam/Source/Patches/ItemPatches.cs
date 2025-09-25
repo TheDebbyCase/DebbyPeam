@@ -12,7 +12,6 @@ namespace DebbyPeam.Patches
     {
         public void Start()
         {
-            DebbyPeam.instance.log.LogDebug("SkullThrowInstantiater Start");
             PhotonNetwork.Instantiate("Misc/SkullThrowLogic", transform.position, transform.rotation);
             Destroy(gameObject);
         }
@@ -23,7 +22,6 @@ namespace DebbyPeam.Patches
         public List<Affliction> afflictions = new List<Affliction>();
         public void Start()
         {
-            DebbyPeam.instance.log.LogDebug("SkullThrowLogic Start");
             ItemDatabase.TryGetItem(25, out Item skullRef);
             Action_ApplyMassAffliction skullMassAffliction = skullRef.GetComponent<Action_ApplyMassAffliction>();
             photonView = GetComponent<PhotonView>();
@@ -42,12 +40,10 @@ namespace DebbyPeam.Patches
                 for (int i = 0; i < Character.AllCharacters.Count; i++)
                 {
                     float newDist = Vector3.Distance(transform.position, Character.AllCharacters[i].HipPos());
-                    DebbyPeam.instance.log.LogDebug($"Distance from character {i}: \"{newDist}\"");
                     if (newDist < closestPlayerDist && newDist < 5f)
                     {
                         closestPlayerDist = newDist;
                         playerIndex = i;
-                        DebbyPeam.instance.log.LogDebug($"SkullThrowLogic player \"{Character.AllCharacters[i].characterName}\" ({playerIndex}) is now the closest character with distance: \"{closestPlayerDist}\"");
                     }
                 }
                 if (playerIndex != -1)
@@ -61,9 +57,7 @@ namespace DebbyPeam.Patches
         }
         public IEnumerator DestroyTimerCoroutine()
         {
-            DebbyPeam.instance.log.LogDebug($"SkullThrowLogic Destroy Coroutine Start");
             yield return new WaitForSeconds(5f);
-            DebbyPeam.instance.log.LogDebug($"SkullThrowLogic Destroy Coroutine End");
             PhotonNetwork.Destroy(gameObject);
         }
         [PunRPC]
@@ -86,6 +80,35 @@ namespace DebbyPeam.Patches
     [HarmonyPatch(typeof(Item))]
     public static class ItemPatches
     {
+        [HarmonyPatch(nameof(Item.Update))]
+        [HarmonyPrefix]
+        public static bool CheckPlayerDist(Item __instance)
+        {
+            if (DebbyPeam.instance.ModConfig.throwableSkull.Value && __instance.UIData.itemName == "Cursed Skull" && __instance.itemState == ItemState.Ground)
+            {
+                float closestPlayerDist = 10f;
+                int playerIndex = -1;
+                for (int i = 0; i < Character.AllCharacters.Count; i++)
+                {
+                    float newDist = Vector3.Distance(__instance.transform.position, Character.AllCharacters[i].HipPos());
+                    if (newDist < closestPlayerDist && newDist < 5f)
+                    {
+                        closestPlayerDist = newDist;
+                        playerIndex = i;
+                    }
+                }
+                Breakable breakable = __instance.GetComponent<Breakable>();
+                if (playerIndex != -1 && breakable.breakOnCollision)
+                {
+                    breakable.breakOnCollision = false;
+                }
+                else if (!breakable.breakOnCollision)
+                {
+                    breakable.breakOnCollision = true;
+                }
+            }
+            return true;
+        }
         [HarmonyPatch(nameof(Item.Awake))]
         [HarmonyPrefix]
         public static bool MakeSkullBreakable(Item __instance)
@@ -104,7 +127,7 @@ namespace DebbyPeam.Patches
                 bonkable.bonk = coconutRef.GetComponent<Bonkable>().bonk;
                 DebbyPeam.instance.log.LogDebug("Skull Bonkable added");
                 Breakable breakable = skullObject.AddComponent<Breakable>();
-                breakable.breakOnCollision = true;
+                breakable.breakOnCollision = false;
                 breakable.minBreakVelocity = 15f;
                 breakable.instantiateOnBreak = new List<GameObject>();
                 breakable.breakSFX = __instance.GetComponent<CursedSkullVFX>().doneSFX.ToList();
@@ -121,7 +144,7 @@ namespace DebbyPeam.Patches
                 eventOnItemCollision.eventOnCollided = new UnityEvent();
                 eventOnItemCollision.eventOnCollided.AddListener(() => { __instance.SetKinematicNetworked(false); });
                 eventOnItemCollision.minCollisionVelocity = 8f;
-                eventOnItemCollision.onlyOnce = true;
+                eventOnItemCollision.onlyOnce = false;
                 DebbyPeam.instance.log.LogDebug("Skull EventOnItemCollision added");
             }
             return true;

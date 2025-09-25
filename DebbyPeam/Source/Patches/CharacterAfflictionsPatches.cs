@@ -9,7 +9,11 @@ namespace DebbyPeam.Patches
         [HarmonyPostfix]
         public static void RopeWeight(CharacterAfflictions __instance)
         {
-            if (DebbyPeam.instance.ModConfig.trouserRope.Value && TrouserRope.trouserRopeDictionary.ContainsKey(__instance.character))
+            if (!DebbyPeam.instance.ModConfig.trouserRope.Value)
+            {
+                return;
+            }
+            if (TrouserRope.trouserRopeDictionary.ContainsKey(__instance.character))
             {
                 float toAdd = TrouserRope.trouserRopeDictionary[__instance.character].weightAdded;
                 if (toAdd > 0)

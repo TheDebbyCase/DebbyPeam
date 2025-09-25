@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using DebbyPeam.Utils;
+using System.Linq;
 namespace DebbyPeam.Items
 {
     public class DebbyItem : MonoBehaviour
@@ -21,8 +23,8 @@ namespace DebbyPeam.Items
                 return item.GetItemName();
             }
         }
-        public Animator animator;
-        public List<RandomAnimation> randomTimeTriggers = new List<RandomAnimation>();
+        public AnimationHandler anim = null;
+        public List<ItemRepeatAnim> repeatAnims = new List<ItemRepeatAnim>();
         public List<Collider> colliders = new List<Collider>();
         public Transform floatPoint;
         public float floatForce;
@@ -34,11 +36,19 @@ namespace DebbyPeam.Items
             List<string> interactsToLocalize = new List<string>() { item.UIData.mainInteractPrompt, item.UIData.secondaryInteractPrompt, item.UIData.scrollInteractPrompt };
             interactsToLocalize.RemoveAll(x => x == "");
             AddLocalizedStrings(item.UIData.itemName, interactsToLocalize);
-            if (randomTimeTriggers.Count == 0)
+            if (TryGetComponent(out Animator animator))
             {
+                anim = new AnimationHandler(animator);
                 GenerateEvents();
             }
-            IterateEvents(false);
+        }
+        public void CreateRepeatAnim(string animation, IEnumerable<ItemState> states = null, float min = 1f, float max = 2f, float randMin = 0f, float randMax = 0f)
+        {
+            ItemRepeatAnim result = new ItemRepeatAnim(anim, animation, states, min, max, randMin, randMax);
+            if (result.anim != null)
+            {
+                repeatAnims.Add(result);
+            }
         }
         public virtual void AddLocalizedStrings(string nameToLocalize, List<string> interactStrings = null)
         {
@@ -101,131 +111,35 @@ namespace DebbyPeam.Items
                 IterateEvents();
             }
         }
-        public void IterateEvents(bool invoke = true)
+        public void IterateEvents()
         {
-            for (int i = 0; i < randomTimeTriggers.Count; i++)
+            for (int i = 0; i < repeatAnims.Count; i++)
             {
-                RandomAnimation trigger = randomTimeTriggers[i];
+                ItemRepeatAnim trigger = repeatAnims[i];
                 if (!trigger.triggerableStates.Contains(item.itemState))
                 {
                     continue;
                 }
-                trigger.timer -= Time.deltaTime;
-                if (trigger.timer <= 0f)
+                if (trigger.Run(out object value))
                 {
-                    if (invoke)
-                    {
-                        log.LogDebug($"\"{ItemName}\" triggered timed effect \"{i}\" during state: \"{item.itemState}\"");
-                        AnimSync(trigger);
-                    }
-                    trigger.timer = UnityEngine.Random.Range(trigger.minimumTime, trigger.maximumTime);
+                    item.photonView.RPC("AnimSyncRPC", RpcTarget.All, trigger.animation, value);
                 }
             }
-        }
-        public void AnimSync(RandomAnimation trigger)
-        {
-            object obj = string.Empty;
-            if (animator != null)
-            {
-                switch (trigger.animationValueType)
-                {
-                    case ValueType.Integer:
-                        {
-                            if (trigger.animationValue == string.Empty)
-                            {
-                                trigger.animationValue = "0";
-                            }
-                            obj = int.Parse(trigger.animationValue);
-                            if (trigger.randomValue)
-                            {
-                                obj = UnityEngine.Random.Range(Mathf.FloorToInt(trigger.randomMin), Mathf.CeilToInt(trigger.randomMax));
-                            }
-                            break;
-                        }
-                    case ValueType.Float:
-                        {
-                            if (trigger.animationValue == string.Empty)
-                            {
-                                trigger.animationValue = "0";
-                            }
-                            obj = float.Parse(trigger.animationValue);
-                            if (trigger.randomValue)
-                            {
-                                obj = UnityEngine.Random.Range(trigger.randomMin, trigger.randomMax);
-                            }
-                            break;
-                        }
-                    case ValueType.Boolean:
-                        {
-                            if (trigger.animationValue == string.Empty)
-                            {
-                                trigger.animationValue = "false";
-                            }
-                            obj = bool.Parse(trigger.animationValue);
-                            if (trigger.randomValue)
-                            {
-                                obj = UnityEngine.Random.Range(0, 2) == 1;
-                            }
-                            break;
-                        }
-                }
-                item.photonView.RPC("AnimSyncRPC", RpcTarget.All, trigger.animationName, obj);
-                return;
-            }
-            log.LogWarning($"\"{ItemName}\" tried to use an animation but did not have an Animator!");
         }
         [PunRPC]
-        public void AnimSyncRPC(string animName, object value = null)
+        public void AnimSyncRPC(string animName, object value)
         {
-            switch (value)
+            anim.SetValue(animName, value);
+            string logString = $"\"{ItemName}\" syncing animation \"{animName}\"";
+            if (value != null)
             {
-                case bool booleanValue:
-                    {
-                        animator.SetBool(animName, booleanValue);
-                        break;
-                    }
-                case int integerValue:
-                    {
-                        animator.SetInteger(animName, integerValue);
-                        break;
-                    }
-                case float floatValue:
-                    {
-                        animator.SetFloat(animName, floatValue);
-                        break;
-                    }
-                default:
-                    {
-                        animator.SetTrigger(animName);
-                        break;
-                    }
+                logString += $"with value \"{value}\"";
             }
-            log.LogDebug($"\"{ItemName}\" syncing animation \"{animName}\" with value \"{value}\"");
+            log.LogDebug(logString);
         }
         public virtual void PlaySFX()
         {
             customSFX.Play(transform.position);
         }
-    }
-    [Serializable]
-    public class RandomAnimation
-    {
-        public float timer = 0f;
-        public float minimumTime = 1f;
-        public float maximumTime = 2f;
-        public List<ItemState> triggerableStates = new List<ItemState>();
-        public ValueType animationValueType;
-        public string animationName = "";
-        public string animationValue = string.Empty;
-        public bool randomValue = false;
-        public float randomMin = 0f;
-        public float randomMax = 1f;
-    }
-    public enum ValueType
-    {
-        None,
-        Integer,
-        Float,
-        Boolean
     }
 }

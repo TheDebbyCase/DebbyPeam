@@ -9,7 +9,11 @@ namespace DebbyPeam.Patches
         [HarmonyPrefix]
         public static bool NoSelfInteraction(ref bool __result, RopeSegment __instance, ref Character interactor)
         {
-            if (DebbyPeam.instance.ModConfig.trouserRope.Value && TrouserRope.trouserRopeDictionary.ContainsKey(interactor))
+            if (!DebbyPeam.instance.ModConfig.trouserRope.Value)
+            {
+                return true;
+            }
+            if (TrouserRope.trouserRopeDictionary.ContainsKey(interactor))
             {
                 Rope rope = TrouserRope.trouserRopeDictionary[interactor].rope;
                 if (rope == null)
